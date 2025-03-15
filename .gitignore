@@ -32,3 +32,6 @@ dist/
 # Temporary files
 *.log
 *.tmp
+
+# .env (Sensitive information like API keys)
+.env
