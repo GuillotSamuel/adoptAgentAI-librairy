@@ -82,8 +82,9 @@ def get_api_credentials(api_name: str, account_name: str = "default") -> dict:
     credentials = {}
     for key in os.environ:
         if key.startswith(prefix):
-            cred_type = key.replace(prefix, "").lower()
+            cred_type = key[len(prefix) + 1:].lower()
             credentials[cred_type] = os.getenv(key)
+
 
     return credentials
 
