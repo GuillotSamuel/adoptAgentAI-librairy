@@ -3,27 +3,27 @@ from datetime import datetime
 from adoptagentai.utils.api_keys import get_api_credentials
 
 class Agent:
-    def __init__(self, name: str = None, model_name: str = None, model_account_name: str = None):
+    def __init__(self, name: str = None, model_name: str = None, model_account_name: str = None, tool_list: list = None, tool_credentials: dict = None, memory: list = None):
         """Initialize an AI agent with optional model and tool configuration."""
         # Agent general
         self.name = name
         
         # Retrieval Model
-        self.model_name = model_name.lower() if model_name else None
+        self.model_name = model_name if model_name else None
         self.model_account_name = model_account_name
         self.model_credentials = get_api_credentials(self.model_name, self.model_account_name) if model_name else None
         
         # Tools
-        self.tool_list = []
-        self.tool_credentials = {}
+        self.tool_list = tool_list if tool_list else []
+        self.tool_credentials = tool_credentials if tool_credentials else {}
         
         # Memory
-        self.memory = []
+        self.memory = memory if memory else []
         
         # Logging configuration
         self.logger = logging.getLogger(__name__)
         logging.basicConfig(level=logging.INFO)
-        
+
         self.logger.info(f"Agent '{name}' initialized with model: {model_name}")
         
     
