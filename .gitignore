@@ -35,3 +35,6 @@ dist/
 
 # .env (Sensitive information like API keys)
 .env
+
+# div
+test.py

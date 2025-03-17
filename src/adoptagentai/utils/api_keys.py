@@ -1,5 +1,5 @@
 import os
-from dotenv import set_key, find_dotenv, unset_key
+from dotenv import set_key, find_dotenv, unset_key, load_dotenv
 
 
 API_REQUIREMENTS = {
@@ -74,6 +74,8 @@ def get_api_credentials(api_name: str, account_name: str = "default") -> dict:
     """
     api_name = api_name.lower()
     
+    load_dotenv()
+    
     if api_name not in API_REQUIREMENTS:
         raise ValueError(f"API {api_name} not supported.")
     
@@ -105,6 +107,8 @@ def remove_api_credentials(api_name: str, account_name: str = "default") -> bool
     """
     api_name = api_name.lower()
     
+    load_dotenv()
+    
     if api_name not in API_REQUIREMENTS:
         raise ValueError(f"API {api_name} not supported.")
     
@@ -118,8 +122,11 @@ def remove_api_credentials(api_name: str, account_name: str = "default") -> bool
     for key in list(os.environ.keys()):
         if key.startswith(prefix):
             unset_key(dotenv_path, key)
+            del os.environ[key]
             removed = True
-            
+    
+    load_dotenv()
+    
     return removed
 
 
@@ -137,6 +144,8 @@ def list_api_accounts(api_name: str) -> list:
         ValueError: If the API is not supported.
     """
     api_name = api_name.lower()
+    
+    load_dotenv()
     
     if api_name not in API_REQUIREMENTS:
         raise ValueError(f"API {api_name} not supported.")
@@ -161,6 +170,8 @@ def list_configured_apis() -> list:
         list: Names of APIs with configured credentials.
     """
     configured_apis = set()
+    
+    load_dotenv()
     
     for key in os.environ:
         parts = key.split('_')
