@@ -82,11 +82,11 @@ def get_api_credentials(api_name: str, account_name: str = "default") -> dict:
     prefix = f"{api_name.upper()}_{account_name.upper()}"
     
     credentials = {}
-    for key in os.environ:
-        if key.startswith(prefix):
-            cred_type = key[len(prefix) + 1:].lower()
-            credentials[cred_type] = os.getenv(key)
 
+    for req_key in API_REQUIREMENTS[api_name]:
+        env_key = f"{prefix}_{req_key.upper()}"
+        if env_key in os.environ:
+            credentials[req_key.lower()] = os.getenv(env_key)
 
     return credentials
 
@@ -145,8 +145,6 @@ def list_api_accounts(api_name: str) -> list:
     """
     api_name = api_name.lower()
     
-    load_dotenv()
-    
     if api_name not in API_REQUIREMENTS:
         raise ValueError(f"API {api_name} not supported.")
     
@@ -170,8 +168,6 @@ def list_configured_apis() -> list:
         list: Names of APIs with configured credentials.
     """
     configured_apis = set()
-    
-    load_dotenv()
     
     for key in os.environ:
         parts = key.split('_')
