@@ -29,9 +29,13 @@ class Agent:
     
     def add_tool(self, tool_name: str, tool_credentials: dict) -> None:
         """Add a tool to the agent with its credentials."""
-        self.tool_list.append(tool_name)
-        self.tool_credentials[tool_name] = tool_credentials
-        self.logger.info(f"Tool '{tool_name}' added to the agent.")
+        if tool_name in self.tool_list:
+            self.logger.warning(f"Tool '{tool_name}' already exists. Updating credentials.")
+            self.tool_credentials[tool_name] = tool_credentials
+        else:
+            self.tool_list.append(tool_name)
+            self.tool_credentials[tool_name] = tool_credentials
+            self.logger.info(f"Tool '{tool_name}' added to the agent.")
         
     
     def add_memory(self, data: str, category: str = None) -> dict:
