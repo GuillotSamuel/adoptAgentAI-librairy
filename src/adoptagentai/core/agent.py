@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 from adoptagentai.utils.api_keys import get_api_credentials
+import adoptagentai.core.modelStrategies as modelStrategies
 
 class Agent:
     def __init__(self, name: str = None, model_name: str = None, model_account_name: str = None, tool_list: list = None, tool_credentials: dict = None, memory: list = None):
@@ -12,6 +13,10 @@ class Agent:
         self.model_name = model_name if model_name else None
         self.model_account_name = model_account_name
         self.model_credentials = get_api_credentials(self.model_name, self.model_account_name) if model_name else None
+        self.strategies = {
+            "gpt-4o": modelStrategies.gpt_4o_strategy,
+            "gpt-4o-mini": modelStrategies.gpt_4o_mini_strategy,
+        }
         
         # Tools
         self.tool_list = tool_list if tool_list else []
@@ -88,3 +93,23 @@ class Agent:
         self.model_account_name = model_account_name
         self.model_credentials = get_api_credentials(self.model_name, self.model_account_name)
         self.logger.info(f"Agent model updated to: {model_name}")
+        
+    
+    def run_agent(self, prompt: str) -> str:
+        """Execute the agent by generating a response from the configured model."""
+        print(f"model name {self.model_name}, model account name {self.model_account_name}, model credentials {self.model_credentials}") # TEST
+        if not self.model_name or not self.model_account_name or not self.model_credentials:
+            self.logger.error("No model configured for execution.")
+            return "Error: No model configured."
+
+        try:
+            for key, strategy in self.strategies.items():
+                if key in self.model_name:
+                    response = strategy(self.model_name, prompt, self.model_credentials)
+                    self.logger.info(f"Model '{self.model_name}' executed successfully.")
+                    return response
+
+        except Exception as e:
+            self.logger.error(f"Error executing model: {e}")
+            return "Error executing model."
+    

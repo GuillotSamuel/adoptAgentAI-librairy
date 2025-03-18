@@ -41,7 +41,7 @@ def test_agent_initialization(mock_api_credentials, mock_logger):
     
     agent = Agent(
         name="FullAgent", 
-        model_name="openai", 
+        model_name="gpt-4o-mini", 
         model_account_name="default",
         tool_list=tools,
         tool_credentials=tool_creds,
@@ -49,12 +49,12 @@ def test_agent_initialization(mock_api_credentials, mock_logger):
     )
     
     assert agent.name == "FullAgent"
-    assert agent.model_name == "openai"
+    assert agent.model_name == "gpt-4o-mini"
     assert agent.model_account_name == "default"
     assert agent.tool_list == tools
     assert agent.tool_credentials == tool_creds
     assert agent.memory == memory
-    mock_api_credentials.assert_called_with("openai", "default")
+    mock_api_credentials.assert_called_with("gpt-4o-mini", "default")
 
 
 def test_add_tool(mock_logger):
@@ -172,14 +172,14 @@ def test_update_model(mock_get_credentials, mock_logger):
     mock_get_credentials.return_value = {"api_key": "new-model-key"}
     
     agent = Agent(name="TestAgent")
-    agent.update_model("openai", "prod")
+    agent.update_model("gpt-4o", "prod")
     
-    assert agent.model_name == "openai"
+    assert agent.model_name == "gpt-4o"
     assert agent.model_account_name == "prod"
     assert agent.model_credentials == {"api_key": "new-model-key"}
-    mock_get_credentials.assert_called_with("openai", "prod")
-    mock_logger.info.assert_called_with("Agent model updated to: openai")
+    mock_get_credentials.assert_called_with("gpt-4o", "prod")
+    mock_logger.info.assert_called_with("Agent model updated to: gpt-4o")
     
     # Test model name gets lowercased
-    agent.update_model("OpenAI")
-    assert agent.model_name == "openai"
+    agent.update_model("gpt-4o-mini")
+    assert agent.model_name == "gpt-4o-mini"
