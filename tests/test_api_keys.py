@@ -16,9 +16,9 @@ from adoptagentai.utils.api_keys import (
 def mock_environ():
     """Fixture to provide a clean environment for each test"""
     with patch.dict(os.environ, {
-        "OPENAI_DEFAULT_API_KEY": "test-key",
-        "OPENAI_TEST_API_KEY": "test-key-2",
-        "OPENAI_PROD_API_KEY": "prod-key",
+        "GPT-4O_DEFAULT_API_KEY": "test-key",
+        "GPT-4O_TEST_API_KEY": "test-key-2",
+        "GPT-4O_PROD_API_KEY": "prod-key",
     }, clear=True):
         yield
 
