@@ -4,7 +4,8 @@ from dotenv import set_key, find_dotenv, unset_key, load_dotenv
 
 API_REQUIREMENTS = {
     "gpt-4o": ["api_key"],
-    "gpt-4o-mini": ["api_key"]    
+    "gpt-4o-mini": ["api_key"],
+    "google": ["client_id", "client_secret"],
 }
 
 
